@@ -51,7 +51,7 @@ Features embedded **Monaco Editor** (VS Code), competitive programming auto-comp
 You do **not** need the Chrome Web Store to install or use this extension. Follow these simple steps:
 
 ### Step 1: Download or Clone the Repository
-* **Option A (Download ZIP)**: Download [`csescode-extension.zip`](https://github.com/Vamp-Niklaus/cses-leetcode/releases) and extract it on your computer.
+* **Option A (Download ZIP)**: Download [**`csescode-extension.zip`**](https://github.com/Vamp-Niklaus/cses-leetcode/releases/latest/download/csescode-extension.zip) (direct download) and extract it on your computer.
 * **Option B (Git Clone)**:
   ```bash
   git clone https://github.com/Vamp-Niklaus/cses-leetcode.git
