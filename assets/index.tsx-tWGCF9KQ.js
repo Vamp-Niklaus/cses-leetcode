@@ -186,6 +186,13 @@ function parseFallbackFromSidebar(fallbackNode){
       }
     }
     if(!time) time=a.textContent.trim().split(" ")[0];
+    let detailsHref="";
+    if(a){
+      const raw=a.getAttribute("href")||a.href||"";
+      if(raw){
+        try{ detailsHref=new URL(raw,window.location.origin).href; }catch(e){ detailsHref=raw; }
+      }
+    }
     return {
       id:idx+1,
       time:time||"Recent",
@@ -195,7 +202,7 @@ function parseFallbackFromSidebar(fallbackNode){
       status,
       isAccepted:isAcc,
       isZero,
-      detailsHref:a.href
+      detailsHref
     };
   });
 }
@@ -205,6 +212,10 @@ async function fetchSubmissionsList(taskId){
   const navA=Array.from(document.querySelectorAll("a")).find(a=>a.href&&a.href.includes("/view/"));
   if(navA) viewUrl=navA.href;
   if(!viewUrl&&taskId) viewUrl=`/problemset/view/${taskId}/`;
+  if(!viewUrl){
+    const m=location.href.match(/\/task\/(\d+)/)||location.href.match(/\/view\/(\d+)/);
+    if(m) viewUrl=`/problemset/view/${m[1]}/`;
+  }
   if(!viewUrl) return [];
 
   try{
@@ -225,7 +236,13 @@ async function fetchSubmissionsList(taskId){
       const isZero=scoreTd?.classList?.contains("zero")||scoreTd?.querySelector(".zero")!==null;
       const status=isAcc?"Accepted":(isZero?"Wrong Answer":"Submitted");
       const detailsA=tds[5]?.querySelector("a.details-link")||tr.querySelector('a[href*="/result/"]');
-      const detailsHref=detailsA?detailsA.href:"";
+      let detailsHref="";
+      if(detailsA){
+        const raw=detailsA.getAttribute("href")||detailsA.href||"";
+        if(raw){
+          try{ detailsHref=new URL(raw,window.location.origin).href; }catch(e){ detailsHref=raw; }
+        }
+      }
       return {
         id:idx+1,
         time,
@@ -277,6 +294,13 @@ function SubmissionsPane({fallbackNode}){
       setRestoringUrl(null);
     }
   };
+
+  if(loading&&items.length===0){
+    return t("div",{className:"flex flex-col items-center justify-center py-16 text-center text-fg-muted",children:[
+      t("div",{className:"mb-3 inline-block h-6 w-6 animate-spin rounded-full border-2 border-accent border-t-transparent"}),
+      t("div",{className:"text-[13px] text-fg-muted",children:"Loading submissions…"})
+    ]});
+  }
 
   if(!loading&&items.length===0){
     return t("div",{className:"flex flex-col items-center justify-center py-16 text-center text-fg-muted",children:[
@@ -371,7 +395,7 @@ function SubmissionsPane({fallbackNode}){
         ]});
       })})
     ]})
-  );
+  });
 }
 function Pt(e){const n=document.createElement("div");n.className="topic-list";const r=document.createElement("div");r.className="submissions-list";let s=n;for(const o of Array.from(e.children)){if(o.tagName==="HR"){s=r;continue}s.appendChild(o)}return{topicLabel:n.querySelector("h4")?.textContent?.trim()||"Problems",topicEl:n,submissionsEl:r}}function It(e=location.href){return e.match(/\/task\/(\d+)/)?.[1]??null}const Bt=""+chrome.runtime.getURL("assets/theme-CFyqH5wF.css"),ue="leetify-cses-host";async function Mt(){const e=It();if(!e||document.getElementById(ue)||document.querySelector('input[type="file"]')||(await Re(),!S.getState().enabled))return;const n=Lt(),r=_t(),s=At(),a=r?Pt(r):null;r?.remove();const o=document.createElement("div");o.id=ue,o.style.flex="1 1 100%",o.style.width="100%",o.style.minWidth="0";const i=o.attachShadow({mode:"open"}),l=document.createElement("link");l.rel="stylesheet",l.href=Bt,i.appendChild(l);const d=document.createElement("div");d.id="leetify-cses-root",i.appendChild(d),Dt(d),S.subscribe(h=>{d.dataset.theme=h.theme}),n?.parentElement?n.parentElement.replaceChild(o,n):document.body.appendChild(o);const u=document.querySelector(".skeleton");if(u&&(u.style.maxWidth="none",u.style.margin="0"),s){const h=s.navLinks.find(g=>g.label.trim().toLowerCase()==="submit");yt(h?.href??null),document.querySelector(".navigation")?.remove()}const c=o.getBoundingClientRect().top;Le(t(Rt,{taskId:e,problemNode:n,topicLabel:a?.topicLabel??"Problems",topicNode:a?.topicEl??null,submissionsNode:a?.submissionsEl??null,pageMeta:s,topOffsetPx:c}),d)}function Dt(e){e.dataset.theme=S.getState().theme}Mt();Et();export{W as _};
 //# sourceMappingURL=index.tsx-tWGCF9KQ.js.map
