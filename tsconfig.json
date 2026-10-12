@@ -1,0 +1,4 @@
+{
+  "compilerOptions": { "noEmit": true, "skipLibCheck": true, "strict": true },
+  "files": ["preview/typecheck.ts"]
+}

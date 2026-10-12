@@ -1,0 +1,15 @@
+:root {
+  --preview-background: oklch(0.22 0 0);
+  --preview-surface: oklch(0.27 0 0);
+  --preview-foreground: oklch(0.9 0 0);
+  --preview-border: oklch(0.4 0 0);
+}
+body { margin: 0; background: var(--preview-background); color: var(--preview-foreground); font-family: -apple-system, "Segoe UI", sans-serif; }
+.header { background: var(--preview-surface); }
+.header > div { min-height: 44px; }
+.header .logo img { width: 90px; height: 24px; object-fit: contain; }
+.header .controls { display: flex; align-items: center; gap: 8px; white-space: nowrap; }
+.header a { color: var(--preview-foreground); text-decoration: none; }
+.content-wrapper { display: flex; }
+.preview-spiral { border-collapse: collapse; margin: 20px auto; }
+.preview-spiral td { border: 1px solid var(--preview-border); padding: 8px; text-align: center; }
