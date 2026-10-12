@@ -18,7 +18,7 @@
       "matches": [ "https://cses.fi/*" ],
       "run_at": "document_idle"
    } ],
-   "description": "A modern, Leetcode-style workspace for solving CSES problems.",
+   "description": "A modern, LeetCode-style workspace and Monaco IDE for solving CSES problems.",
    "options_ui": {
       "open_in_tab": true,
       "page": "src/app/options/index.html"
@@ -31,7 +31,7 @@
       "48": "icons/icon-48.png"
    },
    "manifest_version": 3,
-   "name": "Leetify for CSES",
+   "name": "CSESCode",
    "permissions": [ "storage", "activeTab", "offscreen" ],
    "sandbox": {
       "pages": [ "sandbox.html" ]

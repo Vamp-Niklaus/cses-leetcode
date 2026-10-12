@@ -1,4 +1,4 @@
-# Leetify for CSES (Enhanced Edition) ⚡
+# CSESCode ⚡
 
 [![Manifest V3](https://img.shields.io/badge/Manifest-V3-brightgreen.svg)](https://developer.chrome.com/docs/extensions/mv3/intro/)
 [![License: MIT](https://img.shields.io/badge/License-MIT-yellow.svg)](https://opensource.org/licenses/MIT)
@@ -51,7 +51,7 @@ Features embedded **Monaco Editor** (VS Code), competitive programming auto-comp
 You do **not** need the Chrome Web Store to install or use this extension. Follow these simple steps:
 
 ### Step 1: Download or Clone the Repository
-* **Option A (Download ZIP)**: Download [`leetify-cses-extension.zip`](https://github.com/Vamp-Niklaus/cses-leetcode/releases) and extract it on your computer.
+* **Option A (Download ZIP)**: Download [`csescode-extension.zip`](https://github.com/Vamp-Niklaus/cses-leetcode/releases) and extract it on your computer.
 * **Option B (Git Clone)**:
   ```bash
   git clone https://github.com/Vamp-Niklaus/cses-leetcode.git
@@ -92,4 +92,3 @@ Want to run tests against your own local Docker container or private judge?
 
 * Distributed under the [MIT License](LICENSE).
 * Authored & maintained by **[Vamp-Niklaus (Rakesh Kumar)](https://github.com/Vamp-Niklaus)**.
-* Base UI inspired by the open-source Leetify project.

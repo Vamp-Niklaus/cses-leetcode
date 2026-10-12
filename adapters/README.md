@@ -1,6 +1,6 @@
 # Judge Adapter System Guide
 
-This folder contains the **Judge Adapter System** for the Leetify for CSES extension.
+This folder contains the **Judge Adapter System** for the CSESCode extension.
 
 ---
 
