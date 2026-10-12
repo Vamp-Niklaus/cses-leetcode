@@ -25,3 +25,26 @@
 .leetify-suggest-toggle:hover{opacity:1;background:#2a2a40;color:#e0e0ff}
 .leetify-suggest-toggle.disabled{color:#555566;border-color:#2a2a3c;background:#141420}
 .leetify-suggest-toggle.disabled:hover{color:#7777aa}
+
+/* ── Force-hide ALL indent guide lines ───────────────────────────────────── */
+.monaco-editor .lines-content .core-guide,
+.monaco-editor .lines-content .core-guide-indent,
+.monaco-editor .lines-content .core-guide-indent-active,
+.monaco-editor .lines-content .core-guide-bracket,
+.monaco-editor .lines-content .core-guide-bracket-active,
+.monaco-editor .lines-content .core-guide-bracket-secondary,
+.monaco-editor .indent-guide,
+.monaco-editor .indent-guide-active,
+.monaco-editor .lines-content [class*="guide"] {
+  display: none !important;
+  visibility: hidden !important;
+  opacity: 0 !important;
+}
+
+/* ── Bracket match highlight – strong box outline ────────────────────────── */
+.monaco-editor .bracket-match {
+  border: 1.5px solid #569cd6 !important;
+  background: rgba(86,156,214,0.12) !important;
+  border-radius: 2px !important;
+  box-sizing: border-box !important;
+}
