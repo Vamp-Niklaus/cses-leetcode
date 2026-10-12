@@ -201,17 +201,21 @@ function parseFallbackFromSidebar(fallbackNode){
 }
 
 async function fetchSubmissionsList(taskId){
-  if(!taskId) return [];
-  const viewUrl=`/problemset/view/${taskId}/`;
+  let viewUrl=null;
+  const navA=Array.from(document.querySelectorAll("a")).find(a=>a.href&&a.href.includes("/view/"));
+  if(navA) viewUrl=navA.href;
+  if(!viewUrl&&taskId) viewUrl=`/problemset/view/${taskId}/`;
+  if(!viewUrl) return [];
+
   try{
     const res=await fetch(viewUrl,{credentials:"include"});
     if(!res.ok) return [];
     const html=await res.text();
     const doc=new DOMParser().parseFromString(html,"text/html");
-    const rows=Array.from(doc.querySelectorAll("table.wide tbody tr"));
-    return rows.map((tr,idx)=>{
+    const trs=Array.from(doc.querySelectorAll("table.wide tr, table tr"));
+    const dataRows=trs.filter(tr=>tr.querySelectorAll("td").length>=5);
+    return dataRows.map((tr,idx)=>{
       const tds=Array.from(tr.querySelectorAll("td"));
-      if(tds.length<5) return null;
       const time=tds[0]?.textContent?.trim()||"";
       const lang=tds[1]?.textContent?.trim()||"C++";
       const runtime=tds[2]?.textContent?.trim()||"--";
@@ -275,99 +279,99 @@ function SubmissionsPane({fallbackNode}){
   };
 
   if(!loading&&items.length===0){
-    return t("div",{className:"flex flex-col items-center justify-center py-16 text-center text-fg-muted"},[
-      t("div",{className:"text-2xl mb-2"},"📝"),
-      t("div",{className:"text-[14px] font-medium text-fg"},"No submissions yet"),
-      t("div",{className:"text-[12px] text-fg-muted mt-1"},"Submit your code using the Submit button to see your results here.")
-    ]);
+    return t("div",{className:"flex flex-col items-center justify-center py-16 text-center text-fg-muted",children:[
+      t("div",{className:"text-2xl mb-2",children:"📝"}),
+      t("div",{className:"text-[14px] font-medium text-fg",children:"No submissions yet"}),
+      t("div",{className:"text-[12px] text-fg-muted mt-1",children:"Submit your code using the Submit button to see your results here."})
+    ]});
   }
 
-  return t("div",{className:"csescode-sub-container"},[
-    t("table",{className:"csescode-sub-table"},[
-      t("thead",null,[
-        t("tr",null,[
-          t("th",{style:{width:"32%"}},"Status"),
-          t("th",{style:{width:"16%"}},"Language"),
-          t("th",{style:{width:"16%"}},"Runtime"),
-          t("th",{style:{width:"16%"}},"Code Size"),
-          t("th",{style:{width:"20%",textAlign:"right"}},"Actions")
-        ])
-      ]),
-      t("tbody",null,items.map((item,idx)=>{
+  return t("div",{className:"csescode-sub-container",children:
+    t("table",{className:"csescode-sub-table",children:[
+      t("thead",{children:
+        t("tr",{children:[
+          t("th",{style:{width:"32%"},children:"Status"}),
+          t("th",{style:{width:"16%"},children:"Language"}),
+          t("th",{style:{width:"16%"},children:"Runtime"}),
+          t("th",{style:{width:"16%"},children:"Code Size"}),
+          t("th",{style:{width:"20%",textAlign:"right"},children:"Actions"})
+        ]})
+      }),
+      t("tbody",{children:items.map((item,idx)=>{
         const isRestoring=restoringUrl===item.detailsHref;
         const isSuccess=successUrl===item.detailsHref;
-        return t("tr",{key:item.detailsHref||idx,className:"csescode-sub-row"},[
-          t("td",null,[
-            t("div",{className:"csescode-status-col"},[
-              t("span",{className:item.isAccepted?"csescode-status-acc":"csescode-status-err"},[
+        return t("tr",{key:item.detailsHref||idx,className:"csescode-sub-row",children:[
+          t("td",{children:
+            t("div",{className:"csescode-status-col",children:[
+              t("span",{className:item.isAccepted?"csescode-status-acc":"csescode-status-err",children:[
                 t("span",{style:{width:"7px",height:"7px",borderRadius:"50%",background:item.isAccepted?"#2cbb5d":"#ef4444",display:"inline-block"}}),
                 item.status
-              ]),
-              t("span",{className:"csescode-sub-time"},item.time)
-            ])
-          ]),
-          t("td",null,[
-            t("span",{className:"csescode-lang-pill"},item.lang||"C++")
-          ]),
-          t("td",null,[
-            t("span",{className:"csescode-metric-val"},[
-              t("svg",{width:13,height:13,viewBox:"0 0 24 24",fill:"none",stroke:"currentColor",strokeWidth:2,strokeLinecap:"round",strokeLinejoin:"round",style:{opacity:.6}},[
+              ]}),
+              t("span",{className:"csescode-sub-time",children:item.time})
+            ]})
+          }),
+          t("td",{children:
+            t("span",{className:"csescode-lang-pill",children:item.lang||"C++"})
+          }),
+          t("td",{children:
+            t("span",{className:"csescode-metric-val",children:[
+              t("svg",{width:13,height:13,viewBox:"0 0 24 24",fill:"none",stroke:"currentColor",strokeWidth:2,strokeLinecap:"round",strokeLinejoin:"round",style:{opacity:.6},children:[
                 t("circle",{cx:12,cy:12,r:10}),
                 t("polyline",{points:"12 6 12 12 16 14"})
-              ]),
+              ]}),
               item.runtime||"--"
-            ])
-          ]),
-          t("td",null,[
-            t("span",{className:"csescode-metric-val"},[
-              t("svg",{width:13,height:13,viewBox:"0 0 24 24",fill:"none",stroke:"currentColor",strokeWidth:2,strokeLinecap:"round",strokeLinejoin:"round",style:{opacity:.6}},[
+            ]})
+          }),
+          t("td",{children:
+            t("span",{className:"csescode-metric-val",children:[
+              t("svg",{width:13,height:13,viewBox:"0 0 24 24",fill:"none",stroke:"currentColor",strokeWidth:2,strokeLinecap:"round",strokeLinejoin:"round",style:{opacity:.6},children:[
                 t("polyline",{points:"16 18 22 12 16 6"}),
                 t("polyline",{points:"8 6 2 12 8 18"})
-              ]),
+              ]}),
               item.codeSize||"--"
-            ])
-          ]),
-          t("td",null,[
-            t("div",{className:"csescode-actions-cell",style:{justifyContent:"flex-end"}},[
+            ]})
+          }),
+          t("td",{children:
+            t("div",{className:"csescode-actions-cell",style:{justifyContent:"flex-end"},children:[
               item.detailsHref&&t("button",{
                 type:"button",
                 className:"csescode-restore-btn"+(isSuccess?" success":""),
                 onClick:()=>onRestore(item.detailsHref),
                 disabled:isRestoring,
-                title:"Restore code into Monaco editor"
-              },[
-                isRestoring?t("svg",{width:12,height:12,viewBox:"0 0 24 24",fill:"none",stroke:"currentColor",strokeWidth:2.5,strokeLinecap:"round",strokeLinejoin:"round",style:{animation:"csescode-spin 0.8s linear infinite",marginRight:"3px"}},[
-                  t("path",{d:"M21 2v6h-6"}),
-                  t("path",{d:"M3 12a9 9 0 0 1 15-6.7L21 8"}),
-                  t("path",{d:"M3 22v-6h6"}),
-                  t("path",{d:"M21 12a9 9 0 0 1-15 6.7L3 16"})
-                ]):(isSuccess?t("span",{style:{marginRight:"3px"}},"✓"):t("svg",{width:12,height:12,viewBox:"0 0 24 24",fill:"none",stroke:"currentColor",strokeWidth:2.2,strokeLinecap:"round",strokeLinejoin:"round",style:{marginRight:"3px"}},[
-                  t("path",{d:"M21 2v6h-6"}),
-                  t("path",{d:"M3 12a9 9 0 0 1 15-6.7L21 8"}),
-                  t("path",{d:"M3 22v-6h6"}),
-                  t("path",{d:"M21 12a9 9 0 0 1-15 6.7L3 16"})
-                ])),
-                isRestoring?"Loading…":(isSuccess?"Loaded!":"Restore")
-              ]),
+                title:"Restore code into Monaco editor",
+                children:[
+                  isRestoring?t("svg",{width:12,height:12,viewBox:"0 0 24 24",fill:"none",stroke:"currentColor",strokeWidth:2.5,strokeLinecap:"round",strokeLinejoin:"round",style:{animation:"csescode-spin 0.8s linear infinite",marginRight:"3px"},children:[
+                    t("path",{d:"M21 2v6h-6"}),
+                    t("path",{d:"M3 12a9 9 0 0 1 15-6.7L21 8"}),
+                    t("path",{d:"M3 22v-6h6"}),
+                    t("path",{d:"M21 12a9 9 0 0 1-15 6.7L3 16"})
+                  ]}):(isSuccess?t("span",{style:{marginRight:"3px"},children:"✓"}):t("svg",{width:12,height:12,viewBox:"0 0 24 24",fill:"none",stroke:"currentColor",strokeWidth:2.2,strokeLinecap:"round",strokeLinejoin:"round",style:{marginRight:"3px"},children:[
+                    t("path",{d:"M21 2v6h-6"}),
+                    t("path",{d:"M3 12a9 9 0 0 1 15-6.7L21 8"}),
+                    t("path",{d:"M3 22v-6h6"}),
+                    t("path",{d:"M21 12a9 9 0 0 1-15 6.7L3 16"})
+                  ]})),
+                  isRestoring?"Loading…":(isSuccess?"Loaded!":"Restore")
+                ]
+              }),
               item.detailsHref&&t("a",{
                 href:item.detailsHref,
                 target:"_blank",
                 rel:"noopener noreferrer",
                 className:"csescode-details-link",
-                title:"View full test results on CSES"
-              },[
-                t("svg",{width:12,height:12,viewBox:"0 0 24 24",fill:"none",stroke:"currentColor",strokeWidth:2,strokeLinecap:"round",strokeLinejoin:"round"},[
+                title:"View full test results on CSES",
+                children:t("svg",{width:12,height:12,viewBox:"0 0 24 24",fill:"none",stroke:"currentColor",strokeWidth:2,strokeLinecap:"round",strokeLinejoin:"round",children:[
                   t("path",{d:"M18 13v6a2 2 0 0 1-2 2H5a2 2 0 0 1-2-2V8a2 2 0 0 1 2-2h6"}),
                   t("polyline",{points:"15 3 21 3 21 9"}),
                   t("line",{x1:10,y1:14,x2:21,y2:3})
-                ])
-              ])
-            ])
-          ])
-        ]);
-      }))
-    ])
-  ]);
+                ]})
+              })
+            ]})
+          })
+        ]});
+      })})
+    ]})
+  );
 }
 function Pt(e){const n=document.createElement("div");n.className="topic-list";const r=document.createElement("div");r.className="submissions-list";let s=n;for(const o of Array.from(e.children)){if(o.tagName==="HR"){s=r;continue}s.appendChild(o)}return{topicLabel:n.querySelector("h4")?.textContent?.trim()||"Problems",topicEl:n,submissionsEl:r}}function It(e=location.href){return e.match(/\/task\/(\d+)/)?.[1]??null}const Bt=""+chrome.runtime.getURL("assets/theme-CFyqH5wF.css"),ue="leetify-cses-host";async function Mt(){const e=It();if(!e||document.getElementById(ue)||document.querySelector('input[type="file"]')||(await Re(),!S.getState().enabled))return;const n=Lt(),r=_t(),s=At(),a=r?Pt(r):null;r?.remove();const o=document.createElement("div");o.id=ue,o.style.flex="1 1 100%",o.style.width="100%",o.style.minWidth="0";const i=o.attachShadow({mode:"open"}),l=document.createElement("link");l.rel="stylesheet",l.href=Bt,i.appendChild(l);const d=document.createElement("div");d.id="leetify-cses-root",i.appendChild(d),Dt(d),S.subscribe(h=>{d.dataset.theme=h.theme}),n?.parentElement?n.parentElement.replaceChild(o,n):document.body.appendChild(o);const u=document.querySelector(".skeleton");if(u&&(u.style.maxWidth="none",u.style.margin="0"),s){const h=s.navLinks.find(g=>g.label.trim().toLowerCase()==="submit");yt(h?.href??null),document.querySelector(".navigation")?.remove()}const c=o.getBoundingClientRect().top;Le(t(Rt,{taskId:e,problemNode:n,topicLabel:a?.topicLabel??"Problems",topicNode:a?.topicEl??null,submissionsNode:a?.submissionsEl??null,pageMeta:s,topOffsetPx:c}),d)}function Dt(e){e.dataset.theme=S.getState().theme}Mt();Et();export{W as _};
 //# sourceMappingURL=index.tsx-tWGCF9KQ.js.map
