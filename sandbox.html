@@ -1,0 +1,38 @@
+<!doctype html>
+<html>
+  <head>
+    <meta charset="utf-8" />
+    <title>Leetify Judge Sandbox</title>
+  </head>
+  <body>
+    <script>
+      window.addEventListener("message", async (event) => {
+        const data = event.data;
+        if (!data || !data.id || !data.code) return;
+
+        const { id, code, params } = data;
+
+        try {
+          // Dynamic execution of user-written adapter in sandboxed context
+          const executeFn = new Function("params", `
+            return (async () => {
+              ${code}
+              if (typeof run === "function") {
+                return await run(params);
+              }
+              if (typeof runCustom === "function") {
+                return await runCustom(params);
+              }
+              throw new Error("Adapter code must define an async function 'run({ url, apiKey, language, code, stdin, signal })'");
+            })();
+          `);
+
+          const result = await executeFn(params);
+          event.source.postMessage({ id, ok: true, result }, event.origin || "*");
+        } catch (err) {
+          event.source.postMessage({ id, ok: false, error: err.message || String(err) }, event.origin || "*");
+        }
+      });
+    </script>
+  </body>
+</html>

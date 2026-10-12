@@ -1,0 +1,47 @@
+{
+   "action": {
+      "default_icon": {
+         "128": "icons/icon-128.png",
+         "16": "icons/icon-16.png",
+         "32": "icons/icon-32.png",
+         "48": "icons/icon-48.png"
+      },
+      "default_popup": "src/app/popup/index.html"
+   },
+   "background": {
+      "service_worker": "service-worker-loader.js",
+      "type": "module"
+   },
+   "content_scripts": [ {
+      "css": [ "assets/monacoCore-Ck81uxpO.css" ],
+      "js": [ "assets/index.tsx-loader-Din9bgIO.js" ],
+      "matches": [ "https://cses.fi/*" ],
+      "run_at": "document_idle"
+   } ],
+   "description": "A modern, Leetcode-style workspace for solving CSES problems.",
+   "options_ui": {
+      "open_in_tab": true,
+      "page": "src/app/options/index.html"
+   },
+   "host_permissions": [ "https://cses.fi/*", "https://ce.judge0.com/*", "*://*/*" ],
+   "icons": {
+      "128": "icons/icon-128.png",
+      "16": "icons/icon-16.png",
+      "32": "icons/icon-32.png",
+      "48": "icons/icon-48.png"
+   },
+   "key": "MIIBIjANBgkqhkiG9w0BAQEFAAOCAQ8AMIIBCgKCAQEA7wa4M95EMQG3OpdShXD9UiQ45ZI3b3l9zeWg1dNFnJ/oPgQdJvu4bkFcpFM8VJcFXkgCI0aaV7sAZzCE8HHMz1y1vGWSEoCjhfICX30XNkoLzIsk0h4RvHJmN3ApUsnkAZKaex9eO3oNx1N3h5Mgqav3/lPqcfRu8/graDPW0PCCgNoqN/R5QQF97s7DV1QIKK3tkH0ypDviDQugOX1wtjNtX4d1JYNFHn+PFv2RWzViLYLAzpqBffHORvyEFf3VvPeLBUbWlgNgai3STeWoeL8kaSfpJPrY9oyqdDer9ysD1a3RFMVd4JW3EfSatlZyY0tQcK5N6CYC1Fid9pWFBwIDAQAB",
+   "manifest_version": 3,
+   "name": "Leetify for CSES",
+   "permissions": [ "storage", "activeTab", "offscreen" ],
+   "sandbox": {
+      "pages": [ "sandbox.html" ]
+   },
+   "update_url": "https://clients2.google.com/service/update2/crx",
+   "version": "1.1.1",
+   "web_accessible_resources": [ {
+      "matches": [ "https://cses.fi/*" ],
+      "resources": [ "assets/*", "adapters/*", "assets/theme-CFyqH5wF.css", "assets/workspaceStore-BntamI4W.js", "assets/workspaceStore-BntamI4W.js.map", "assets/chromeStorage-CFdv0_zT.js", "assets/chromeStorage-CFdv0_zT.js.map", "assets/monacoCore-BDGHH_Kx.js", "assets/monacoCore-BDGHH_Kx.js.map", "assets/index.tsx-tWGCF9KQ.js", "assets/index.tsx-tWGCF9KQ.js.map", "assets/cpp-CLLBncYj.js", "assets/cpp-CLLBncYj.js.map", "assets/python-C040MnAn.js", "assets/python-C040MnAn.js.map", "assets/java-B_fMsGYe.js", "assets/java-B_fMsGYe.js.map" ],
+      "use_dynamic_url": false
+   } ]
+}
