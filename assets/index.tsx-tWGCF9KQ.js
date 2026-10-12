@@ -314,11 +314,11 @@ function SubmissionsPane({fallbackNode}){
     t("table",{className:"csescode-sub-table",children:[
       t("thead",{children:
         t("tr",{children:[
-          t("th",{style:{width:"32%"},children:"Status"}),
+          t("th",{style:{width:"34%"},children:"Status"}),
           t("th",{style:{width:"16%"},children:"Language"}),
-          t("th",{style:{width:"16%"},children:"Runtime"}),
-          t("th",{style:{width:"16%"},children:"Code Size"}),
-          t("th",{style:{width:"20%",textAlign:"right"},children:"Actions"})
+          t("th",{style:{width:"18%"},children:"Runtime"}),
+          t("th",{style:{width:"18%"},children:"Code Size"}),
+          t("th",{style:{width:"14%",textAlign:"right"},children:""})
         ]})
       }),
       t("tbody",{children:items.map((item,idx)=>{
@@ -327,10 +327,21 @@ function SubmissionsPane({fallbackNode}){
         return t("tr",{key:item.detailsHref||idx,className:"csescode-sub-row",children:[
           t("td",{children:
             t("div",{className:"csescode-status-col",children:[
-              t("span",{className:item.isAccepted?"csescode-status-acc":"csescode-status-err",children:[
-                t("span",{style:{width:"7px",height:"7px",borderRadius:"50%",background:item.isAccepted?"#2cbb5d":"#ef4444",display:"inline-block"}}),
-                item.status
-              ]}),
+              item.detailsHref?t("a",{
+                href:item.detailsHref,
+                className:item.isAccepted?"csescode-status-acc":"csescode-status-err",
+                title:"View test results",
+                children:[
+                  t("span",{style:{width:"7px",height:"7px",borderRadius:"50%",background:item.isAccepted?"#2cbb5d":"#ef4444",display:"inline-block"}}),
+                  item.status
+                ]
+              }):t("span",{
+                className:item.isAccepted?"csescode-status-acc":"csescode-status-err",
+                children:[
+                  t("span",{style:{width:"7px",height:"7px",borderRadius:"50%",background:item.isAccepted?"#2cbb5d":"#ef4444",display:"inline-block"}}),
+                  item.status
+                ]
+              }),
               t("span",{className:"csescode-sub-time",children:item.time})
             ]})
           }),
@@ -359,36 +370,24 @@ function SubmissionsPane({fallbackNode}){
             t("div",{className:"csescode-actions-cell",style:{justifyContent:"flex-end"},children:[
               item.detailsHref&&t("button",{
                 type:"button",
-                className:"csescode-restore-btn"+(isSuccess?" success":""),
+                className:"csescode-restore-btn",
                 onClick:()=>onRestore(item.detailsHref),
                 disabled:isRestoring,
-                title:"Restore code into Monaco editor",
-                children:[
-                  isRestoring?t("svg",{width:12,height:12,viewBox:"0 0 24 24",fill:"none",stroke:"currentColor",strokeWidth:2.5,strokeLinecap:"round",strokeLinejoin:"round",style:{animation:"csescode-spin 0.8s linear infinite",marginRight:"3px"},children:[
-                    t("path",{d:"M21 2v6h-6"}),
-                    t("path",{d:"M3 12a9 9 0 0 1 15-6.7L21 8"}),
-                    t("path",{d:"M3 22v-6h6"}),
-                    t("path",{d:"M21 12a9 9 0 0 1-15 6.7L3 16"})
-                  ]}):(isSuccess?t("span",{style:{marginRight:"3px"},children:"✓"}):t("svg",{width:12,height:12,viewBox:"0 0 24 24",fill:"none",stroke:"currentColor",strokeWidth:2.2,strokeLinecap:"round",strokeLinejoin:"round",style:{marginRight:"3px"},children:[
-                    t("path",{d:"M21 2v6h-6"}),
-                    t("path",{d:"M3 12a9 9 0 0 1 15-6.7L21 8"}),
-                    t("path",{d:"M3 22v-6h6"}),
-                    t("path",{d:"M21 12a9 9 0 0 1-15 6.7L3 16"})
-                  ]})),
-                  isRestoring?"Loading…":(isSuccess?"Loaded!":"Restore")
-                ]
-              }),
-              item.detailsHref&&t("a",{
-                href:item.detailsHref,
-                target:"_blank",
-                rel:"noopener noreferrer",
-                className:"csescode-details-link",
-                title:"View full test results on CSES",
-                children:t("svg",{width:12,height:12,viewBox:"0 0 24 24",fill:"none",stroke:"currentColor",strokeWidth:2,strokeLinecap:"round",strokeLinejoin:"round",children:[
-                  t("path",{d:"M18 13v6a2 2 0 0 1-2 2H5a2 2 0 0 1-2-2V8a2 2 0 0 1 2-2h6"}),
-                  t("polyline",{points:"15 3 21 3 21 9"}),
-                  t("line",{x1:10,y1:14,x2:21,y2:3})
-                ]})
+                title:isRestoring?"Restoring code…":(isSuccess?"Restored to editor!":"Restore code to editor"),
+                "aria-label":"Restore code to editor",
+                children:isRestoring?t("svg",{width:14,height:14,viewBox:"0 0 24 24",fill:"none",stroke:"currentColor",strokeWidth:2.2,strokeLinecap:"round",strokeLinejoin:"round",style:{animation:"csescode-spin 0.8s linear infinite"},children:[
+                  t("path",{d:"M21 2v6h-6"}),
+                  t("path",{d:"M3 12a9 9 0 0 1 15-6.7L21 8"}),
+                  t("path",{d:"M3 22v-6h6"}),
+                  t("path",{d:"M21 12a9 9 0 0 1-15 6.7L3 16"})
+                ]}):(isSuccess?t("svg",{width:14,height:14,viewBox:"0 0 24 24",fill:"none",stroke:"currentColor",strokeWidth:2.5,strokeLinecap:"round",strokeLinejoin:"round",children:[
+                  t("polyline",{points:"20 6 9 17 4 12"})
+                ]}):t("svg",{width:14,height:14,viewBox:"0 0 24 24",fill:"none",stroke:"currentColor",strokeWidth:2.2,strokeLinecap:"round",strokeLinejoin:"round",children:[
+                  t("path",{d:"M21 2v6h-6"}),
+                  t("path",{d:"M3 12a9 9 0 0 1 15-6.7L21 8"}),
+                  t("path",{d:"M3 22v-6h6"}),
+                  t("path",{d:"M21 12a9 9 0 0 1-15 6.7L3 16"})
+                ]}))
               })
             ]})
           })

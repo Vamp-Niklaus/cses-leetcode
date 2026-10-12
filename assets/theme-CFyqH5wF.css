@@ -58,37 +58,37 @@
   color: inherit !important;
 }
 
-/* ── CSESCode Submissions Restore Button ─────────────────────────────────── */
+/* ── CSESCode Submissions Restore Button (Icon Only, No Color) ─────────── */
 .csescode-restore-btn {
   display: inline-flex !important;
   align-items: center !important;
   justify-content: center !important;
-  margin-left: 8px !important;
-  padding: 2px 7px !important;
-  font-size: 11px !important;
-  font-weight: 500 !important;
-  border-radius: 4px !important;
-  background: rgba(255, 161, 22, 0.12) !important;
-  border: 1px solid rgba(255, 161, 22, 0.35) !important;
-  color: #ffa116 !important;
+  width: 28px !important;
+  height: 28px !important;
+  padding: 0 !important;
+  border-radius: 6px !important;
+  background: transparent !important;
+  border: 1px solid transparent !important;
+  color: rgb(var(--color-fg-muted)) !important;
   cursor: pointer !important;
   transition: all 0.15s ease !important;
   vertical-align: middle !important;
-  line-height: 1.4 !important;
   text-decoration: none !important;
 }
 
 .csescode-restore-btn:hover {
-  background: rgba(255, 161, 22, 0.25) !important;
-  border-color: #ffa116 !important;
-  color: #ffffff !important;
-  transform: translateY(-0.5px) !important;
+  background: rgba(255, 255, 255, 0.08) !important;
+  color: rgb(var(--color-fg)) !important;
 }
 
-.csescode-restore-btn.success {
-  background: rgba(44, 187, 93, 0.18) !important;
-  border-color: #2cbb5d !important;
-  color: #2cbb5d !important;
+[data-theme="light"] .csescode-restore-btn:hover {
+  background: rgba(0, 0, 0, 0.06) !important;
+  color: #111111 !important;
+}
+
+.csescode-restore-btn:disabled {
+  opacity: 0.6 !important;
+  cursor: default !important;
 }
 
 @keyframes csescode-spin {
@@ -152,6 +152,14 @@
   display: inline-flex;
   align-items: center;
   gap: 6px;
+  text-decoration: none !important;
+  cursor: pointer;
+  transition: opacity 0.15s ease;
+}
+
+.csescode-status-acc:hover {
+  text-decoration: underline !important;
+  opacity: 0.85;
 }
 
 .csescode-status-err {
@@ -161,6 +169,14 @@
   display: inline-flex;
   align-items: center;
   gap: 6px;
+  text-decoration: none !important;
+  cursor: pointer;
+  transition: opacity 0.15s ease;
+}
+
+.csescode-status-err:hover {
+  text-decoration: underline !important;
+  opacity: 0.85;
 }
 
 .csescode-sub-time {
