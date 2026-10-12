@@ -1,14 +1,13 @@
 /* Layout styles for CSESCode top navigation and workspace */
 #csescode-top-nav {
-  display: inline-flex;
+  display: flex;
   align-items: center;
-  justify-content: center;
-  gap: 6px;
+  gap: 5px;
   margin: 0 auto;
-  padding: 0 12px;
+  padding: 0 4px;
   min-width: 0;
-  flex: 1 1 auto;
-  max-width: 620px;
+  flex: 0 1 auto;
+  max-width: calc(100% - 20px);
   overflow-x: auto;
   scrollbar-width: none;
 }
@@ -18,19 +17,20 @@
 .csescode-nav-btn {
   display: inline-flex;
   align-items: center;
-  gap: 6px;
-  padding: 5px 12px;
+  gap: 5px;
+  padding: 5px 11px;
   border-radius: 6px;
   font-size: 13px;
   font-weight: 500;
   font-family: -apple-system, BlinkMacSystemFont, "Segoe UI", Roboto, "Helvetica Neue", Arial, sans-serif;
-  color: rgba(255, 255, 255, 0.72) !important;
+  color: rgba(255, 255, 255, 0.75) !important;
   text-decoration: none !important;
   border: 1px solid transparent;
   background: transparent;
   cursor: pointer;
   line-height: 1.4;
   white-space: nowrap;
+  flex-shrink: 0;
   transition: all 0.15s cubic-bezier(0.4, 0, 0.2, 1);
   user-select: none;
   outline: none;
@@ -78,22 +78,19 @@
 .csescode-course-breadcrumb {
   display: flex;
   align-items: center;
-  gap: 6px;
-  font-size: 12.5px;
+  font-size: 13px;
   color: var(--color-fg-muted, #8b949e);
-  margin-bottom: 8px;
+  margin-bottom: 6px;
 }
 .csescode-course-breadcrumb a {
   color: var(--color-fg-muted, #8b949e);
   text-decoration: none;
+  font-weight: 500;
   transition: color 0.12s ease;
 }
 .csescode-course-breadcrumb a:hover {
   color: var(--color-accent, #58a6ff);
   text-decoration: underline;
-}
-.csescode-course-breadcrumb span {
-  opacity: 0.5;
 }
 .csescode-problem-title {
   font-size: 22px;
@@ -106,10 +103,10 @@
 @media (max-width: 768px) {
   #csescode-top-nav {
     gap: 3px;
-    padding: 0 4px;
+    padding: 0 2px;
   }
   .csescode-nav-btn {
-    padding: 4px 8px;
+    padding: 4px 7px;
     font-size: 12px;
   }
 }
