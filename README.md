@@ -30,10 +30,14 @@ Features embedded **Monaco Editor** (VS Code), competitive programming auto-comp
   * Instant feedback badges: **Accepted**, **Wrong Answer**, **Time Limit Exceeded**, or **Compile Error**.
 * **🚀 1-Click CSES Submission**:
   * Automatically populates the CSES submission form and matches your chosen language version.
+* **🔄 Instant Code Restore from Submissions**:
+  * View your submission history under the **Submissions** tab.
+  * Click the **Restore** button next to any past submission to instantly fetch and load that code back into the Monaco editor with automatic language matching.
 * **🎯 Subtle Bracket Pair Highlighting**:
   * Clean, distraction-free bracket matching outlines when your cursor rests on brackets.
-* **💾 Automatic Local Snapshots**:
-  * Code auto-saves per problem and language in `chrome.storage.local`. Never lose your solution drafts.
+* **💾 Automatic Local Snapshots & Settings Persistence**:
+  * Code auto-saves per problem and language.
+  * Hints toggle (IntelliSense on/off), Dark/Light theme mode, and font size persist across refreshes via `localStorage`.
 
 ---
 

@@ -57,3 +57,40 @@
   box-sizing: border-box !important;
   color: inherit !important;
 }
+
+/* ── CSESCode Submissions Restore Button ─────────────────────────────────── */
+.csescode-restore-btn {
+  display: inline-flex !important;
+  align-items: center !important;
+  justify-content: center !important;
+  margin-left: 8px !important;
+  padding: 2px 7px !important;
+  font-size: 11px !important;
+  font-weight: 500 !important;
+  border-radius: 4px !important;
+  background: rgba(255, 161, 22, 0.12) !important;
+  border: 1px solid rgba(255, 161, 22, 0.35) !important;
+  color: #ffa116 !important;
+  cursor: pointer !important;
+  transition: all 0.15s ease !important;
+  vertical-align: middle !important;
+  line-height: 1.4 !important;
+  text-decoration: none !important;
+}
+
+.csescode-restore-btn:hover {
+  background: rgba(255, 161, 22, 0.25) !important;
+  border-color: #ffa116 !important;
+  color: #ffffff !important;
+  transform: translateY(-0.5px) !important;
+}
+
+.csescode-restore-btn.success {
+  background: rgba(44, 187, 93, 0.18) !important;
+  border-color: #2cbb5d !important;
+  color: #2cbb5d !important;
+}
+
+@keyframes csescode-spin {
+  100% { transform: rotate(360deg); }
+}
