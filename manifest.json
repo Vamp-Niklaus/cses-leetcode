@@ -30,14 +30,12 @@
       "32": "icons/icon-32.png",
       "48": "icons/icon-48.png"
    },
-   "key": "MIIBIjANBgkqhkiG9w0BAQEFAAOCAQ8AMIIBCgKCAQEA7wa4M95EMQG3OpdShXD9UiQ45ZI3b3l9zeWg1dNFnJ/oPgQdJvu4bkFcpFM8VJcFXkgCI0aaV7sAZzCE8HHMz1y1vGWSEoCjhfICX30XNkoLzIsk0h4RvHJmN3ApUsnkAZKaex9eO3oNx1N3h5Mgqav3/lPqcfRu8/graDPW0PCCgNoqN/R5QQF97s7DV1QIKK3tkH0ypDviDQugOX1wtjNtX4d1JYNFHn+PFv2RWzViLYLAzpqBffHORvyEFf3VvPeLBUbWlgNgai3STeWoeL8kaSfpJPrY9oyqdDer9ysD1a3RFMVd4JW3EfSatlZyY0tQcK5N6CYC1Fid9pWFBwIDAQAB",
    "manifest_version": 3,
    "name": "Leetify for CSES",
    "permissions": [ "storage", "activeTab", "offscreen" ],
    "sandbox": {
       "pages": [ "sandbox.html" ]
    },
-   "update_url": "https://clients2.google.com/service/update2/crx",
    "version": "1.1.1",
    "web_accessible_resources": [ {
       "matches": [ "https://cses.fi/*" ],
