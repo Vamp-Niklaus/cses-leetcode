@@ -51,8 +51,8 @@
 
 /* ── Custom bracket pair highlight (manual decoration) ───────────────────── */
 .monaco-editor .view-lines .leetify-bracket-hl {
-  border: 1.5px solid #569cd6 !important;
-  background: rgba(86,156,214,0.18) !important;
+  border: 1px solid rgba(86,156,214,0.45) !important;
+  background: rgba(86,156,214,0.06) !important;
   border-radius: 2px !important;
   box-sizing: border-box !important;
   color: inherit !important;
