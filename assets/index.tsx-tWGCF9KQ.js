@@ -209,6 +209,41 @@ function parseFallbackFromSidebar(fallbackNode){
   });
 }
 
+/* Parse the "Result:" row from an individual CSES result page */
+async function fetchResultVerdict(url){
+  try{
+    const r=await fetch(url,{credentials:"include"});
+    if(!r.ok) return null;
+    const html=await r.text();
+    const doc=new DOMParser().parseFromString(html,"text/html");
+    /* Look for <th>Result</th> sibling <td> in the submission detail table */
+    const ths=Array.from(doc.querySelectorAll("th,td"));
+    for(let i=0;i<ths.length;i++){
+      const txt=(ths[i].textContent||"").trim().toUpperCase();
+      if(txt==="RESULT"&&ths[i+1]){
+        return (ths[i+1].textContent||"").trim().toUpperCase();
+      }
+    }
+    /* Fallback: look for text "Result:" anywhere */
+    const body=doc.body?.textContent||"";
+    const m=body.match(/Result[:\s]+([A-Z ]+?)(?:\n|$)/i);
+    if(m) return m[1].trim().toUpperCase();
+  }catch(e){}
+  return null;
+}
+
+function mapVerdictToStatus(raw){
+  if(!raw) return null;
+  if(raw.includes("ACCEPT")) return "Accepted";
+  if(raw.includes("TIME")) return "TIME LIMIT EXCEEDED";
+  if(raw.includes("MEMORY")) return "MEMORY LIMIT EXCEEDED";
+  if(raw.includes("RUNTIME")||raw.includes("RUNTIME ERROR")) return "RUNTIME ERROR";
+  if(raw.includes("COMPILE")) return "COMPILE ERROR";
+  if(raw.includes("WRONG")) return "Wrong Answer";
+  if(raw.includes("OUTPUT")) return "OUTPUT LIMIT EXCEEDED";
+  return null;
+}
+
 async function fetchSubmissionsList(taskId){
   let viewUrl=null;
   const navA=Array.from(document.querySelectorAll("a")).find(a=>a.href&&a.href.includes("/view/"));
@@ -227,7 +262,7 @@ async function fetchSubmissionsList(taskId){
     const doc=new DOMParser().parseFromString(html,"text/html");
     const trs=Array.from(doc.querySelectorAll("table.wide tr, table tr"));
     const dataRows=trs.filter(tr=>tr.querySelectorAll("td").length>=5);
-    return dataRows.map((tr,idx)=>{
+    const items=dataRows.map((tr,idx)=>{
       const tds=Array.from(tr.querySelectorAll("td"));
       const time=tds[0]?.textContent?.trim()||"";
       const lang=tds[1]?.textContent?.trim()||"C++";
@@ -238,6 +273,7 @@ async function fetchSubmissionsList(taskId){
       const isZero=scoreTd?.classList?.contains("zero")||scoreTd?.querySelector(".zero")!==null;
       const isQue=scoreTd?.classList?.contains("que")||scoreTd?.querySelector(".que")!==null;
       const scoreText=(scoreTd?.textContent||"").toUpperCase();
+      /* Initial status from list page — may be wrong for TLE vs WA */
       const status=isAcc?"Accepted":isQue?"TIME LIMIT EXCEEDED":scoreText.includes("TIME")?"TIME LIMIT EXCEEDED":scoreText.includes("RUNTIME")?"RUNTIME ERROR":scoreText.includes("COMPILE")?"COMPILE ERROR":(isZero?"Wrong Answer":"Submitted");
       const detailsA=tds[5]?.querySelector("a.details-link")||tr.querySelector('a[href*="/result/"]');
       let detailsHref="";
@@ -247,18 +283,27 @@ async function fetchSubmissionsList(taskId){
           try{ detailsHref=new URL(raw,window.location.origin).href; }catch(e){ detailsHref=raw; }
         }
       }
-      return {
-        id:idx+1,
-        time,
-        lang,
-        runtime,
-        codeSize,
-        status,
-        isAccepted:isAcc,
-        isZero,
-        detailsHref
-      };
+      return {id:idx+1,time,lang,runtime,codeSize,status,isAccepted:isAcc,isZero,detailsHref};
     }).filter(Boolean);
+
+    /* Phase 2: for non-accepted submissions fetch the result page to get real verdict
+       (CSES list only shows score class, not TLE vs WA distinction) */
+    const toEnrich=items.filter(it=>!it.isAccepted&&it.detailsHref);
+    if(toEnrich.length>0){
+      const results=await Promise.allSettled(
+        toEnrich.map(it=>fetchResultVerdict(it.detailsHref))
+      );
+      results.forEach((r,i)=>{
+        if(r.status==="fulfilled"&&r.value){
+          const mapped=mapVerdictToStatus(r.value);
+          if(mapped){
+            toEnrich[i].status=mapped;
+            toEnrich[i].isAccepted=(mapped==="Accepted");
+          }
+        }
+      });
+    }
+    return items;
   }catch(err){
     console.warn("[CSESCode] Failed to fetch submissions view:",err);
     return [];
