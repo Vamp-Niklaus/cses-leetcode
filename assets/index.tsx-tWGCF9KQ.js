@@ -177,7 +177,9 @@ function parseFallbackFromSidebar(fallbackNode){
   return links.map((a,idx)=>{
     const isAcc=a.querySelector(".full")!==null||a.classList.contains("full");
     const isZero=a.querySelector(".zero")!==null||a.classList.contains("zero");
-    const status=isAcc?"Accepted":(isZero?"Wrong Answer":"Submitted");
+    const isQue=a.querySelector(".que")!==null||a.classList.contains("que");
+    const scoreText=(a.querySelector(".score")||a).textContent.toUpperCase();
+    const status=isAcc?"Accepted":isQue?"TIME LIMIT EXCEEDED":scoreText.includes("TIME")?"TIME LIMIT EXCEEDED":scoreText.includes("RUNTIME")?"RUNTIME ERROR":scoreText.includes("COMPILE")?"COMPILE ERROR":(isZero?"Wrong Answer":"Submitted");
     let time="";
     for(const child of Array.from(a.childNodes)){
       if(child.nodeType===3){
@@ -234,7 +236,9 @@ async function fetchSubmissionsList(taskId){
       const scoreTd=tds[4];
       const isAcc=scoreTd?.classList?.contains("full")||scoreTd?.querySelector(".full")!==null;
       const isZero=scoreTd?.classList?.contains("zero")||scoreTd?.querySelector(".zero")!==null;
-      const status=isAcc?"Accepted":(isZero?"Wrong Answer":"Submitted");
+      const isQue=scoreTd?.classList?.contains("que")||scoreTd?.querySelector(".que")!==null;
+      const scoreText=(scoreTd?.textContent||"").toUpperCase();
+      const status=isAcc?"Accepted":isQue?"TIME LIMIT EXCEEDED":scoreText.includes("TIME")?"TIME LIMIT EXCEEDED":scoreText.includes("RUNTIME")?"RUNTIME ERROR":scoreText.includes("COMPILE")?"COMPILE ERROR":(isZero?"Wrong Answer":"Submitted");
       const detailsA=tds[5]?.querySelector("a.details-link")||tr.querySelector('a[href*="/result/"]');
       let detailsHref="";
       if(detailsA){
@@ -329,7 +333,7 @@ function SubmissionsPane({fallbackNode}){
             t("div",{className:"csescode-status-col",children:[
               item.detailsHref?t("a",{
                 href:item.detailsHref,
-                className:item.isAccepted?"csescode-status-acc":"csescode-status-err",
+                className:item.isAccepted?"csescode-status-acc":(item.status.includes("TIME")?"csescode-status-tle":"csescode-status-err"),
                 title:"View test results",
                 onClick:()=>{
                   try{
@@ -339,13 +343,13 @@ function SubmissionsPane({fallbackNode}){
                   }catch(e){}
                 },
                 children:[
-                  t("span",{style:{width:"7px",height:"7px",borderRadius:"50%",background:item.isAccepted?"#2cbb5d":"#ef4444",display:"inline-block"}}),
+                  t("span",{style:{width:"7px",height:"7px",borderRadius:"50%",background:item.isAccepted?"#2cbb5d":(item.status.includes("TIME")?"#f59e0b":(item.status.includes("RUNTIME")||item.status.includes("COMPILE")?"#fb923c":"#ef4444")),display:"inline-block"}}),
                   item.status
                 ]
               }):t("span",{
-                className:item.isAccepted?"csescode-status-acc":"csescode-status-err",
+                className:item.isAccepted?"csescode-status-acc":(item.status.includes("TIME")?"csescode-status-tle":"csescode-status-err"),
                 children:[
-                  t("span",{style:{width:"7px",height:"7px",borderRadius:"50%",background:item.isAccepted?"#2cbb5d":"#ef4444",display:"inline-block"}}),
+                  t("span",{style:{width:"7px",height:"7px",borderRadius:"50%",background:item.isAccepted?"#2cbb5d":(item.status.includes("TIME")?"#f59e0b":(item.status.includes("RUNTIME")||item.status.includes("COMPILE")?"#fb923c":"#ef4444")),display:"inline-block"}}),
                   item.status
                 ]
               }),

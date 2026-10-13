@@ -179,6 +179,23 @@
   opacity: 0.85;
 }
 
+.csescode-status-tle {
+  color: #f59e0b !important;
+  font-weight: 600;
+  font-size: 13px;
+  display: inline-flex;
+  align-items: center;
+  gap: 6px;
+  text-decoration: none !important;
+  cursor: pointer;
+  transition: opacity 0.15s ease;
+}
+
+.csescode-status-tle:hover {
+  text-decoration: underline !important;
+  opacity: 0.85;
+}
+
 .csescode-sub-time {
   font-size: 11px;
   color: rgb(var(--color-fg-muted));
