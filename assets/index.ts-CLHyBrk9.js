@@ -43,7 +43,7 @@ async function runCaseOnJudge(judge, language, code, stdin, timeoutMs) {
       signal: controller.signal,
     });
   } catch (err) {
-    return controller.signal.aborted ? { kind: "timeout" } : { kind: "infra-error" };
+    return controller.signal.aborted ? { kind: "client-timeout" } : { kind: "infra-error" };
   } finally {
     clearTimeout(timer);
   }
@@ -56,7 +56,11 @@ async function runCaseWithFallback(language, code, stdin, timeoutMs) {
   for (let i = 0; i < judges.length; i++) {
     const judge = judges[i];
     try {
-      const outcome = await runCaseOnJudge(judge, language, code, stdin, timeoutMs);
+      let outcome = await runCaseOnJudge(judge, language, code, stdin, timeoutMs);
+      if (outcome.kind === "client-timeout") {
+        // A cold judge can miss our window on the first request; retry once with more time.
+        outcome = await runCaseOnJudge(judge, language, code, stdin, timeoutMs * 2);
+      }
       if (outcome.kind === "ok") {
         return outcome;
       }
@@ -86,7 +90,7 @@ function computeVerdict(outcome, expected) {
   if (outcome.kind === "timeout") {
     return { verdict: "timeout", actualOutput: null, stderr: null, timeMs: null, compileError: null };
   }
-  if (outcome.kind === "rate-limited" || outcome.kind === "infra-error") {
+  if (outcome.kind === "rate-limited" || outcome.kind === "infra-error" || outcome.kind === "client-timeout") {
     return { verdict: "infra-error", actualOutput: null, stderr: null, timeMs: null, compileError: null };
   }
   const { result: res } = outcome;

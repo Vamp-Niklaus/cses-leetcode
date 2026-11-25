@@ -13,6 +13,10 @@
       "type": "module"
    },
    "content_scripts": [ {
+      "js": [ "assets/pre-mount.js" ],
+      "matches": [ "https://cses.fi/*" ],
+      "run_at": "document_start"
+   }, {
       "css": [ "assets/monacoCore-Ck81uxpO.css" ],
       "js": [ "assets/index.tsx-loader-Din9bgIO.js" ],
       "matches": [ "https://cses.fi/*" ],
@@ -32,11 +36,11 @@
    },
    "manifest_version": 3,
    "name": "CSESCode",
-   "permissions": [ "storage", "activeTab", "offscreen" ],
+   "permissions": [ "storage", "activeTab", "offscreen", "scripting" ],
    "sandbox": {
       "pages": [ "sandbox.html" ]
    },
-   "version": "1.1.2",
+   "version": "1.1.3",
    "web_accessible_resources": [ {
       "matches": [ "https://cses.fi/*" ],
       "resources": [ "assets/*", "adapters/*", "assets/theme-CFyqH5wF.css", "assets/workspaceStore-BntamI4W.js", "assets/workspaceStore-BntamI4W.js.map", "assets/chromeStorage-CFdv0_zT.js", "assets/chromeStorage-CFdv0_zT.js.map", "assets/monacoCore-BDGHH_Kx.js", "assets/monacoCore-BDGHH_Kx.js.map", "assets/index.tsx-tWGCF9KQ.js", "assets/index.tsx-tWGCF9KQ.js.map", "assets/cpp-CLLBncYj.js", "assets/cpp-CLLBncYj.js.map", "assets/python-C040MnAn.js", "assets/python-C040MnAn.js.map", "assets/java-B_fMsGYe.js", "assets/java-B_fMsGYe.js.map" ],

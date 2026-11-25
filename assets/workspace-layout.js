@@ -1,3 +1,5 @@
+import { mountAiButtons } from "./ai-helper.js";
+
 // Workspace layout integration
 // Handles top navigation bar and problem pane header
 
@@ -188,6 +190,9 @@ export function mountTopNavigation(meta, problemNode) {
   if (!testsBtnAdded) {
     nav.appendChild(testsBtn);
   }
+
+  // AI helper: Hints and Debug buttons (see ai-helper.js)
+  mountAiButtons(nav, { meta, problemNode });
 
   // Sync open state with Tests button
   window.addEventListener("csescode:console-state", (e) => {

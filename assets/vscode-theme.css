@@ -1,0 +1,64 @@
+/* vscode-theme.css
+ * Loaded inside the workspace's shadow root after theme-CFyqH5wF.css, so these
+ * token values replace the stock palette. Colors follow VS Code's Dark+ theme. */
+
+#leetify-cses-root[data-theme="dark"] {
+  --color-bg-base: 30 30 30;          /* editor background */
+  --color-bg-raised: 37 37 38;        /* side panels, tab bars */
+  --color-bg-overlay: 45 45 48;       /* hover and inactive chips */
+  --color-border: 69 69 69;
+  --color-border-subtle: 60 60 60;
+  --color-fg: 204 204 204;
+  --color-fg-muted: 157 157 157;
+  --color-fg-subtle: 110 110 110;
+  --color-accent: 0 122 204;          /* VS Code blue */
+  --color-accent-hover: 28 151 234;
+  --color-success: 35 209 139;
+  --color-danger: 244 71 71;
+  --color-warning: 205 151 4;
+}
+
+#leetify-cses-root[data-theme="light"] {
+  --color-bg-base: 255 255 255;
+  --color-bg-raised: 243 243 243;
+  --color-bg-overlay: 232 232 232;
+  --color-border: 200 200 200;
+  --color-border-subtle: 220 220 220;
+  --color-fg: 36 36 36;
+  --color-fg-muted: 97 97 97;
+  --color-fg-subtle: 140 140 140;
+  --color-accent: 0 102 184;
+  --color-accent-hover: 0 90 158;
+  --color-success: 22 130 93;
+  --color-danger: 205 49 49;
+  --color-warning: 152 110 0;
+}
+
+#leetify-cses-root {
+  font-family: "Segoe WPC", "Segoe UI", -apple-system, Roboto, sans-serif;
+  font-size: 13px;
+}
+
+/* VS Code uses small corner radii and flat tabs */
+#leetify-cses-root .rounded-md,
+#leetify-cses-root .rounded-lg {
+  border-radius: 3px;
+}
+
+#leetify-cses-root [role="tablist"] button[aria-selected="true"] {
+  color: rgb(var(--color-fg));
+}
+
+#leetify-cses-root [role="tablist"] {
+  letter-spacing: 0;
+}
+
+/* Editor and panel separators read as thin VS Code dividers */
+#leetify-cses-root .border-b {
+  border-bottom-color: rgb(var(--color-border-subtle));
+}
+
+#leetify-cses-root .shadow,
+#leetify-cses-root .hover\:shadow-\[0_2px_10px_rgb\(var\(--color-accent\)\/0\.35\)\]:hover {
+  box-shadow: none;
+}
